@@ -2,14 +2,24 @@ import torch
 import torchvision
 import numpy as np
 import logging
+import sys
 
-from typing import Tuple, List, Type, Dict, Any
-from torchvision import datasets, models, transforms
+from typing import Type, Dict, Any
+from torchvision import transforms
 from ConvNet import ConvNet
 
-logging.basicConfig(filename='MNIST.log',
-                    filemode='w', format='%(name)s - %(levelname)s - %(message)s',
-                    level=logging.DEBUG)
+
+# Logger initialization.
+logger = logging.getLogger(name="MNIST")
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler(filename='MNIST.log')
+console = logging.StreamHandler(sys.stdout)
+fh.setLevel(level=logging.DEBUG)
+fh.setFormatter(logging.Formatter('%(process)s - [%(levelname)s] - %(message)s'))
+console.setLevel(level=logging.DEBUG)
+console.setFormatter(logging.Formatter('%(process)s - [%(levelname)s] - %(message)s'))
+logger.addHandler(fh)
+logger.addHandler(console)
 
 torch.manual_seed(0)
 np.random.seed(0)
