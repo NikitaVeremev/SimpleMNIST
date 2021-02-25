@@ -135,7 +135,7 @@ def train_model(model: torch.nn.Module,
 if __name__ == "__main__":
     model = ConvNet()
     # Используем GPU
-    # model = model.cuda()
+    model = model.cuda()
     # работаем на видеокарте
     DEVICE = torch.device("cuda")
 
