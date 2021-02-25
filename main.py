@@ -1,10 +1,15 @@
 import torch
 import torchvision
 import numpy as np
+import logging
 
 from typing import Tuple, List, Type, Dict, Any
 from torchvision import datasets, models, transforms
 from ConvNet import ConvNet
+
+logging.basicConfig(filename='MNIST.log',
+                    filemode='w', format='%(name)s - %(levelname)s - %(message)s',
+                    level=logging.DEBUG)
 
 torch.manual_seed(0)
 np.random.seed(0)
@@ -114,21 +119,21 @@ def train_model(model: torch.nn.Module,
 
     for epoch in range(max_epochs):
 
-        print(f'Epoch {epoch}')
+        logging.info(f'Epoch {epoch}')
         train_single_epoch(model, optimizer, loss_function1, loss_function2, train_loader)
         val_metrics = validate_single_epoch(model, loss_function1, loss_function2, val_loader)
-        print(f'Validation metrics: \n{val_metrics}')
+        logging.info(f'Validation metrics: \n{val_metrics}')
 
         lr_scheduler.step()
 
         if best_val_loss is None or best_val_loss > val_metrics['mean_loss']:
-            print(f'Best model yet, saving')
+            logging.info(f'Best model yet, saving')
             best_val_loss = val_metrics['mean_loss']
             best_epoch = epoch
             torch.save(model, './best_model.pth')
 
         if epoch - best_epoch > early_stopping_patience:
-            print('Early stopping triggered')
+            logging.info('Early stopping triggered')
             return
 
 
