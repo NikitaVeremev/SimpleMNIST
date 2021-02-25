@@ -129,21 +129,21 @@ def train_model(model: torch.nn.Module,
 
     for epoch in range(max_epochs):
 
-        logging.info(f'Epoch {epoch}')
+        logger.info(f'Epoch {epoch}')
         train_single_epoch(model, optimizer, loss_function1, loss_function2, train_loader)
         val_metrics = validate_single_epoch(model, loss_function1, loss_function2, val_loader)
-        logging.info(f'Validation metrics: \n{val_metrics}')
+        logger.info(f'Validation metrics: \n{val_metrics}')
 
         lr_scheduler.step()
 
         if best_val_loss is None or best_val_loss > val_metrics['mean_loss']:
-            logging.info(f'Best model yet, saving')
+            logger.info(f'Best model yet, saving')
             best_val_loss = val_metrics['mean_loss']
             best_epoch = epoch
             torch.save(model, './best_model.pth')
 
         if epoch - best_epoch > early_stopping_patience:
-            logging.info('Early stopping triggered')
+            logger.info('Early stopping triggered')
             return
 
 
